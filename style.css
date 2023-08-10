@@ -1,5 +1,11 @@
+*{
+  background: #020d1f;/*#020d1f #250e62; #303841*/
+	font-family: 'Montserrat', sans-serif;
+}
+
 body {
-  font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
+    margin: 0px;
 }
 
 .events {
@@ -14,17 +20,20 @@ h1 {
   margin-bottom: 12px;
   color: #de411b;
 }
-
+/* trasnparent background*/
+.tb{
+  background-color: #d7411b00;
+}
 .events .event {
   width: 300px;
   border: 1px solid #ebf1f6;
   box-shadow: 0 0 2px 0 rgba(145,158,171,.2), 0 12px 24px -4px rgba(145,158,171,.12);
 }
 
-.event-title {
-  color: #de411b
+/* dubios ca are backgroun dengru dar l am harcodat ayaye*/
+.toast-message{
+  background-color: #020d1f00;
 }
-
 .event img {
   height: 150px;
 }
@@ -42,7 +51,6 @@ h1 {
 }
 
 #page-header {
-  background-color: #fff;
   position: sticky;
   top: 0;
 }
@@ -70,4 +78,249 @@ h1 {
 .main-content-component {
   margin-bottom: 40px;
 }
+.event-title {
+  color: #de411b;
+  font-size: 100%;
+}
+.event-card{
+  width: 80%;
+  text-align: center;
+  margin: 1%;
+  transition: transform .3s;
+  background-color: #d7411b00;
+  
+}
+.event-card:hover{
+  transform: scale(1.1) translateX(-1%);
+  border-radius: 15px 15px 15px 15px; 
+  border: #d7411b 2px solid;
+}
+.event-card-content{
+  display: flex;
+  width: 100%;
+  text-align: left;
+  
+}
+.event-image{
+  width: 100%;
+  border-radius: 4%;
+  border: #d7411b 2px solid;
 
+}
+.event-card-image{
+  width: 30%;
+  margin-right: 20px;
+  transition: transform .3s;
+}
+.event-card:hover .event-card-image{
+  transform: scale(1.1);
+}
+.event-card:hover .event-card-data{
+  transform: translateX(20%) translateY(20%) scale(1.3);
+}
+
+.event-card-data{
+  width: 40%;
+  transition: transform .3s;
+}
+
+.row{
+  width: 100%;
+  height: 30%;
+  display: block;
+  margin-bottom: 20px;
+}
+.row-button{
+  width: 100%;
+  display: flex;
+  height: auto;
+  text-align: center;
+}
+.action-container{
+  width: 30%;
+  display: block;
+  text-align: left;
+  z-index: 999999;/*ce hackerman is*/
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+/*DE CE DOAMNE E ASA GREU SA CUSTOMIZEZI UN SELECT ?!?!?!?!?!*/
+.row select option{
+  background-color: #020d1f;
+}
+.row select option:hover{
+  background-color: red;
+}
+.ticket-selector:focus{
+  border: #d7411b 2px solid;
+}
+.ticket-selector::after{
+  border: #d7411b 2px solid;
+}
+.ticket-selector{ 
+  color: white;
+  text-align: center;
+  border-radius: 4%;
+  border: #d7411b 2px solid;
+  height: 60%;
+  width: 40%;
+  transition: transform .3s;
+}
+.ticket-selector:hover{
+  background-color: #d7411be6;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.ticket-number{
+  width: 21%;
+  height: 50%;
+  padding: 10px;
+  text-align: center;
+  color: white;
+  border-radius: 4%;
+  border: #d7411b 2px solid;
+  font-size: 120%;
+}
+
+.buy{
+  width: 25%;
+  height: 40%;
+  margin: auto;
+  color: white;
+  border-radius: 4%;
+  border: #d7411b 2px solid;
+  background-color: #d7411b;
+  transition: transform .3s;
+  box-sizing: border-box;
+}
+.buy:hover{
+  cursor: pointer;
+  transform: scale(1.3);
+  opacity: 90%;
+  border-radius: 10px 10px 10px 10px; 
+}
+.buy:disabled{
+  transform: scale(1);
+  opacity: 70%;
+  border-radius: 4%;
+  cursor: default;
+}
+.increase-btn, .decrease-btn{
+  width: 10%;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 5%;
+  text-align: center;
+  font-size: 120%;
+  border-radius: 4%;
+  border: #d7411b 2px solid;
+  background-color: #d7411b;
+  color: white;
+  transition: transform .3s;
+}
+
+.increase-btn:hover, .decrease-btn:hover{
+  transform: scale(1.2);
+  opacity: 90%;
+  border-radius: 20%;
+}
+/*
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ORDERS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+.order-row-primu{
+  width: 80%;
+  margin: auto; 
+  margin-top: 5%;
+  display: flex;
+  color: #d7411b;
+}
+.order-column-primu{
+  width: 20%;
+  color: #d7411b;
+  text-align: center;
+  font-size: 150%;
+  font-weight: bolder;
+}
+.orders{
+  width: 100%;
+}
+.order-card{
+  width: 100%;
+  display: flex;
+  background-color: #020d1f00;
+  transition: transform .3s;
+}
+.order-card:hover{
+  transform: translateX(-5%) scale(1.1);
+  background-color: #020d1f00;
+}
+.order-row{
+  width: 80%;
+  margin: auto;
+  margin-right: 0;
+  margin-top: 5%;
+  display: flex;
+  color: white;
+  border-bottom: #d7411b 2px solid;
+  padding-bottom: 5px;
+}
+.order-column{
+  width: 20%;
+  color: white;
+  text-align: center;
+  font-size: 130%;
+}
+.order-buttons{
+  width: 10%;
+  padding: 1%;
+  color: white;
+  text-align: center;
+  display: flex;
+}
+.delete-button, .edit-button{
+  width: 50%;
+  margin-top: auto;
+  margin-bottom: 5%;
+  margin-left: 10%;
+  text-align: center;
+  font-size: 120%;
+  border-radius: 4%;
+  border: #d7411b 2px solid;
+  background-color: #d7411b;
+  color: white;
+  transition: transform .3s;
+}
+.delete-button:hover, .edit-button:hover{
+  transform: scale(1.1);
+  opacity: 90%;
+}
+.order-column input{
+  color: white;
+}
+.order-column input.active{
+  color: white;
+  border-radius: 4%;
+  border: #d7411b 2px solid;
+  width: 40%;
+}
+.order-column select{
+  width: 40%;
+}
+.order-column select.active{
+  width: 50%;
+  color: white;
+  border-radius: 4%;
+  border: #d7411b 2px solid;
+  text-align: center;
+
+}
