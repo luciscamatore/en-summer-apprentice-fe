@@ -10,6 +10,12 @@
 		<title>Ticket Management</title>
 </head>
 	<body>
+	<!-- Start Page Loading -->
+	<div id="loader-wrapper">
+  		<div id="loader"></div>
+  		<div class="loader-section section-left"></div>
+  		<div class="loader-section section-right"></div>
+	</div> 
 		<header id="page-header">
 			
 			<nav class="container mx-auto px-4 py-2 flex items-center justify-between">
@@ -21,18 +27,12 @@
 				<div class="md:block">
 					<ul class="flex space-x-4">
 						<li>
-							<a
-								href="/"
-								class="text-white hover:text-white text-lg font-bold link-item"
-								>Home</a
-							>
+							<a href="/home"	class="text-white hover:text-white text-lg font-bold link-item">
+								Home</a>
 						</li>
 						<li>
-							<a
-								href="/orders"
-								class="text-white hover:text-white text-lg font-bold link-item"
-								>Orders</a
-							>
+							<a href="/orders" class="text-white hover:text-white text-lg font-bold link-item">
+								Orders</a>
 						</li>
 					</ul>
 				</div>
@@ -42,8 +42,7 @@
 							type="button"
 							class="text-gray-700 hover:text-blue-950 focus:outline-none focus:text-blue-950"
 							id="mobileMenuBtn"
-							aria-label="mobile menu"
-						>
+							aria-label="mobile menu">
 							<i class="fa-solid fa-bars text-xl"></i>
 						</button>
 					</div>
@@ -52,16 +51,14 @@
 			<div class="md:hidden hidden" id="mobileMenu">
 				<ul class="bg-gray-700 rounded-md text-white">
 					<li>
-						<a href="/" class="block px-4 py-2 hover:bg-gray-600"
-							>Home</a
-						>
+						<a href="/home" class="block px-4 py-2 hover:bg-gray-600">
+							Home</a>
 					</li>
 					<li>
 						<a
 							href="/orders"
-							class="block px-4 py-2 hover:bg-gray-600"
-							>Orders</a
-						>
+							class="block px-4 py-2 hover:bg-gray-600">
+							Orders</a>
 					</li>
 				</ul>
 			</div>
@@ -69,6 +66,8 @@
 		<main class="main-content-component">
 		</main>
 		<script type="module" src="./main.js"></script>
+		<script type="module" src="./event-functions.js"></script>
+		<script type="module" src="./order-functions.js"></script>
 		<script src="https://kit.fontawesome.com/29de7ae565.js" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
