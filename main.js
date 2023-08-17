@@ -7,7 +7,6 @@ $(window).load(function() {
   }, 200);
 });
 
-
 // Navigate to a specific URL
 function navigateTo(url) {
   history.pushState(null, null, url);
@@ -33,41 +32,52 @@ function getHomePageTemplate(eventList) {
   newType.forEach(typeElem =>{
     eventTypeOptions = eventTypeOptions + ` <option>${typeElem}</option>` + '\n';
   });
-
+  
   const markup= `
+  <div class="customer-options">
+    <div class="customer-name"><i class="fa-solid fa-user"></i> Hello, ${sessionStorage.getItem('customerName')}</div>
+    <div class="customer-logout"><button class="logout" id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button></div>
+  </div>
   <div class="search-filter">
     <div class="sf-row">
       <input type="text" placeholder="Search &#x1F50D;" spellcheck="false" id="sbar">
       <button class="filter-btn" id="fbtn"><i class="fa-solid fa-filter" id="filter-icon"></i></button>
     </div>
-    <div class="sf-row-select">
+    <div class="sf-row-select" id="sf-select">
       <div class="select-holder">
         <select style="margin-bottom: 5%" id="filter-select-location">
           <option value="location" selected disabled>Location</option>
           ${venueOptions}
         </select>
-        <select style="" id="filter-select-type">
+        <select id="filter-select-type">
           <option value="type" selected disabled>Type</option>
           ${eventTypeOptions}
         </select>
+        <div id="noUiSlider" class="slider-container"></div>
       </div>
       <div class="button-holder">
         <button class="apply-filter-btn" id="fabtn" style="margin-bottom: 15%" disabled><i class="fa-solid fa-check" id="filter-icon"></i></button>
         <button class="apply-filter-btn" id="faabtn" disabled><i class="fa-solid fa-trash-can" id="filter-icon"></i></button>
+        
       </div>
-      
     </div>
   </div>
    <div id="content" >
       <div class="events flex items-center justify-center flex-wrap tb">
       </div>
     </div>
+    <div class="footer"> </div>
   `;
+
   return markup;
 }
 
 function getOrdersPageTemplate() {
   return `
+    <div class="customer-options">
+      <div class="customer-name"><i class="fa-solid fa-user"></i> Hello, ${sessionStorage.getItem('customerName')}</div>
+      <div class="customer-logout"><button class="logout" id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button></div>
+    </div>
     <div id="content">
     <h1 class="text-2xl mb-4 mt-8 text-center">Purchased Tickets</h1>
     <div class="order-row-primu">
@@ -96,7 +106,14 @@ function getOrdersPageTemplate() {
     <div class="orders"></div>
   `;
 }
+function handleLogout(){
+  const logoutButton = document.getElementById('logout-btn');
 
+  logoutButton.addEventListener('click', ()=>{
+    sessionStorage.clear();
+    location.href = 'http://localhost:5173/';
+  });
+}
 /* 
  /$$$$$$$$ /$$    /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$$ /$$$$$$ 
 | $$_____/| $$   | $$| $$_____/| $$$ | $$|__  $$__//$$__  $$
@@ -109,40 +126,56 @@ function getOrdersPageTemplate() {
                                     
 */
 
-let vlocation  ='';
-let type ='';
+let vlocation  ='location';
+let type ='type';
 async function apllyFilters(){
   const filterApplyButton = document.getElementById('fabtn');
   const filterClearButton = document.getElementById('faabtn');
   const filterOptionsLocation = document.getElementById('filter-select-location');
   const filterOptionsType = document.getElementById('filter-select-type');
+  const slider = document.getElementById('noUiSlider');
+  
 
   filterApplyButton.addEventListener('click', async () =>{
     filterApplyButton.disabled = true;
     filterClearButton.disabled = true;
+    slider.disabled = true;
+
     filterApplyButton.classList.toggle('visible');
     filterOptionsLocation.classList.toggle('visible');
     filterOptionsType.classList.toggle('visible');
     filterClearButton.classList.toggle('visible');
+    slider.classList.toggle('visible');
+
     vlocation = filterOptionsLocation.value;
     type = filterOptionsType.value;
     
     const eventList = await fetchEvents(vlocation, type);
     eveniment.addEvents(eventList);
-    
   });
+
   filterClearButton.addEventListener('click', async () =>{
-    vlocation = '';
-    type = '';
+    filterApplyButton.disabled = true;
+    filterClearButton.disabled = true;
+    slider.disabled = true;
+    filterApplyButton.classList.toggle('visible');
+    filterOptionsLocation.classList.toggle('visible');
+    filterOptionsType.classList.toggle('visible');
+    filterClearButton.classList.toggle('visible');
+    slider.classList.toggle('visible');
+
+    vlocation = 'location';
+    type = 'type';
     filterOptionsLocation.value = 'location';
     filterOptionsType.value = 'type';
     const eventList = await fetchEvents(vlocation, type);
     eveniment.addEvents(eventList);
   });
 }
+
 async function fetchEvents(vlocation, type){
   let response = '';
-  if(vlocation == '' && type == ''){
+  if(vlocation == 'location' && type == 'type'){
     response = await fetch('http://localhost:8080/api/getAllEvents', {mode:'cors'});
   }else{
     response = await fetch('http://localhost:8080/api/getEventsByFilter/'+ vlocation + '/' + type, 
@@ -155,7 +188,7 @@ async function fetchEvents(vlocation, type){
     }
 
   const eventsList = await response.json();
-
+  console.log(eventsList);
   return eventsList;
 }
 
@@ -165,14 +198,17 @@ async function renderHomePage() {
   const mainContentDiv = document.querySelector('.main-content-component');
   mainContentDiv.innerHTML = getHomePageTemplate(eventList);
   
-
+  handleLogout();
+  apllyFilters();
+  
   eveniment.setUpFilterEvent(eventList);
   eveniment.filterButtonEvents();
-  apllyFilters();
+  eveniment.noUiSliderHandler(eventList);
+  eveniment.pagination();
 
-  eventList.forEach(event => {
-    eveniment.createEventCard(event);
-  });
+  // eventList.forEach(eventElem => {
+  //   eveniment.createEventCard(eventElem);
+  // });
 }
 
 /* 
@@ -191,6 +227,7 @@ async function fetchOrders(){
   const customerID = sessionStorage.getItem('customerID');
   const response = await fetch('http://localhost:8080/api/orderByID/' + customerID, {mode:'cors'});
   const orderList = await response.json();
+  console.log(orderList);
   return orderList;
 }
 async function renderOrdersPage(categories) {
@@ -200,6 +237,7 @@ async function renderOrdersPage(categories) {
   const orderData = await fetchOrders();
   const orderList = orderData.reverse();
 
+  handleLogout();
   comanda.sortOrders(orderList);
 
   orderList.forEach(order => {

@@ -19,10 +19,12 @@ export function createOrderCard(order){
     }
     const deleteID = order.orderID+'d';
     const editID = order.orderID+'e';
+    const cancelID = order.orderID+'c';
     const inputID = order.orderID+'i';
     const selectID = order.orderID+'s';
     const iconID = order.orderID+'ii';
-    const trashID = order.orderID+'t';
+    const crossID = order.orderID+'x';
+    const orderDate = new Date(Date.parse(order.orderdAt));
 
     const orderCard = document.createElement('div');
     orderCard.classList.add('order-card'); 
@@ -31,17 +33,18 @@ export function createOrderCard(order){
       <div class="order-column tb">${order.eventName}</div>
       <div class="order-column tb"><input class="order-column" placeholder="${order.nrTickets}" id="${inputID}" disabled/></div>
       <div class="order-column tb">
-        <select id="${selectID}"disabled>
+        <select id="${selectID}" disabled>
           <option>${order.ticketCategoryDTO.description}</option>
           <option>${secodDescription}</option>
         </select> 
       </div>
-      <div class="order-column tb">Date</div>
-      <div class="order-column tb">${order.price} $</div>
+      <div class="order-column tb">${orderDate.getDate() + ' / '+ orderDate.getMonth() + ' / ' + orderDate.getFullYear()}</div>
+      <div class="order-column tb">${order.price} $</div> 
     </div>
     <div class="order-buttons">
       <button class="edit-button tb" id="${editID}"><i id="${iconID}" class="fa-solid fa-pen" style="background-color:#ffffff00;"></i></button>
-      <button class="delete-button tb" id="${deleteID}"><i id="${trashID}" class="fa-solid fa-trash-can" style="color: #fffffff;background-color:#ffffff00;"></i></button>
+      <button class="delete-button tb" id="${deleteID}"><i class="fa-solid fa-trash-can" style="color: #fffffff;background-color:#ffffff00;"></i></button>
+      <button class="cancel-button tb" id="${cancelID}" disabled><i class="fa-solid fa-xmark" style="color: #fffffff;background-color:#ffffff00;"></i></button>
     </div>
     `;
     
@@ -50,74 +53,63 @@ export function createOrderCard(order){
     orderContainer.appendChild(orderCard);
 
 }
-export function deleteOrderHnadler(order, orderList){
-  //coding monkey style ?
-  const deleteButton = document.getElementById(order.orderID+'d');
-  const nrTicketOrder = document.getElementById(order.orderID+'i');
-      
-  deleteButton.addEventListener('click', ()=>{
-    if(nrTicketOrder.disabled){
-    fetch('http://localhost:8080/api/deleteOrder/'+ order.orderID ,{  
-      mode: 'cors',
-      method: 'DELETE',
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-        },
-      });
-      //coding monkey style ?
-      
-      toastr.success("Order deleted!");
-      orderList = orderList.filter((o) => {return o.orderID !== order.orderID});
-      addOrders(orderList);
-      }
-    });
-}
+
 export function patchOrderHandler(order, orderList){
   const deleteID = order.orderID+'d';
   const editID = order.orderID+'e';
+  const cancelID = order.orderID+'c';
   const inputID = order.orderID+'i';
   const selectID = order.orderID+'s';
   const iconID = order.orderID+'ii';
-  const trashID = order.orderID+'t';
 
   const deleteButton = document.getElementById(deleteID);
+  const cancelButton = document.getElementById(cancelID);
   const nrTicketOrder = document.getElementById(inputID);
   const ticketCategoryOrder = document.getElementById(selectID);
   const editButton = document.getElementById(editID);
   const icon = document.getElementById(iconID);
-  const trash = document.getElementById(trashID);
-  
+
   editButton.addEventListener('click', ()=>{
     nrTicketOrder.disabled = !nrTicketOrder.disabled;
     ticketCategoryOrder.disabled = !ticketCategoryOrder.disabled;
 
-    ticketCategoryOrder.classList.toggle('active');
-    nrTicketOrder.classList.toggle('active');
-    
+    deleteButton.disabled = true;
+    cancelButton.disabled = false;
+
+    deleteButton.classList.add('not-visible');
+    cancelButton.classList.add('visible');
+
+    ticketCategoryOrder.classList.add('active');
+    nrTicketOrder.classList.add('active');
+
     if(!nrTicketOrder.disabled){
-      icon.classList.toggle('fa-pen');
-      icon.classList.toggle('fa-check');
+      icon.classList.remove('fa-pen');
+      icon.classList.add('fa-floppy-disk');
+      
+      cancelButton.addEventListener('click', ()=>{
+        nrTicketOrder.disabled = true;
+        ticketCategoryOrder.disabled = true;
 
-      trash.classList.toggle('fa-trash-can');
-      trash.classList.toggle('fa-xmark');
+        deleteButton.disabled = false;
+        cancelButton.disabled = true;
+        cancelButton.classList.remove('visible');
+        deleteButton.classList.remove('not-visible');
 
-      deleteButton.addEventListener('click', ()=>{
-        nrTicketOrder.disabled = !nrTicketOrder.disabled;
-        ticketCategoryOrder.disabled = !ticketCategoryOrder.disabled;
-
-        icon.classList.toggle('fa-check');
-        icon.classList.toggle('fa-pen');
-        ticketCategoryOrder.classList.toggle('active');
-        nrTicketOrder.classList.toggle('active');
-        trash.classList.toggle('fa-trash-can');
-        trash.classList.toggle('fa-xmark');
+        icon.classList.remove('fa-floppy-disk');
+        icon.classList.add('fa-pen');
+        ticketCategoryOrder.classList.remove('active');
+        nrTicketOrder.classList.remove('active');
       });
     }else{
-      icon.classList.toggle('fa-check');
-      icon.classList.toggle('fa-pen');
-      trash.classList.toggle('fa-trash-can');
-      trash.classList.toggle('fa-xmark');
+      icon.classList.remove('fa-floppy-disk');
+      icon.classList.add('fa-pen');
+
+      deleteButton.classList.toggle('not-visible');
+      deleteButton.disabled = false;
+
+      cancelButton.classList.toggle('visible');
+      cancelButton.disabled = true;
+
       fetch('http://localhost:8080/api/patchOrder', 
       {
         mode:'cors',
@@ -137,6 +129,31 @@ export function patchOrderHandler(order, orderList){
       toastr.success("Order updated!");
       }    
     });
+}
+export function deleteOrderHnadler(order, orderList){
+  //coding monkey style ?
+  const deleteButton = document.getElementById(order.orderID+'d');
+  const nrTicketOrder = document.getElementById(order.orderID+'i');
+  
+  deleteButton.addEventListener('click', (e)=>{
+    const deleteConfirmation = confirm('Are you sure you want to delete the order?');
+    if(deleteConfirmation){
+      if(nrTicketOrder.disabled){
+        fetch('http://localhost:8080/api/deleteOrder/'+ order.orderID ,{  
+          mode: 'cors',
+          method: 'DELETE', 
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+            },
+          });
+        toastr.success("Order deleted!");
+        orderList = orderList.filter((o) => {return o.orderID !== order.orderID});
+        addOrders(orderList);
+      }}else{
+        toastr.success("ceva");
+      }
+  });
 }
 const sortOrderName = (orders, direction) => {
   const ordersDiv = document.querySelector('.orders');
@@ -206,7 +223,7 @@ const sortOrderDate = (orders, direction) => {
   const ordersDiv = document.querySelector('.orders');
 
   if(direction === 'asc')
-    orders.sort((a,b) => a.ticketCategoryDTO.description.localeCompare(b.ticketCategoryDTO.description));
+    orders.sort((a,b) => a.orderdAt.localeCompare(b.orderdAt));
   
   if(direction === 'desc')
     orders.reverse();
