@@ -4,8 +4,32 @@
 }
 body {
   overflow-x: hidden;
+  overflow-y: scroll;
   margin: 0px;
 }
+select:focus{
+  outline: none;
+}
+::selection{
+  background-color: #d7411b;
+  color: white;
+}
+body::-webkit-scrollbar {
+  position: absolute;
+}
+::-webkit-scrollbar-track {
+  background: #020d1f;
+}
+::-webkit-scrollbar-thumb {
+  background: #d7411b;
+  border-radius: 15px 15px 15px 15px; 
+  border: #d7411b 2px solid;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d7411bcc;
+  border: #d7411bcc;
+}
+
 .events {
   justify-content: center;
   flex-wrap: wrap;
@@ -34,7 +58,7 @@ h1 {
 #page-header {
   position: sticky;
   top: 0;
-  z-index: 999999;
+  z-index: 9;
 }
 .link-item {
   color: #de411b
@@ -58,6 +82,9 @@ h1 {
 /* dubios ca are background negru dar l am hardcodat ayaye*/
 .toast-message{
   background-color: #020d1f00;
+}
+li:hover{
+  color: white;
 }
 /* 
  /$$$$$$$$ /$$    /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$$ /$$$$$$ 
@@ -88,7 +115,6 @@ h1 {
   margin: 1%;
   transition: transform .3s;
   background-color: #d7411b00;
-  
 }
 .event-card:hover{
   transform: scale(1.1) translateX(-1%);
@@ -123,7 +149,6 @@ h1 {
   width: 40%;
   transition: transform .3s;
 }
-
 .row{
   width: 100%;
   height: 30%;
@@ -140,7 +165,7 @@ h1 {
   width: 30%;
   display: block;
   text-align: left;
-  z-index: 999999;/*ce hackerman is*/
+  z-index: 8;/*ce hackerman is*/
 }
 
 input::-webkit-outer-spin-button,
@@ -156,15 +181,13 @@ select {
 /*DE CE DOAMNE E ASA GREU SA CUSTOMIZEZI UN SELECT ?!?!?!?!?!*/
 .row select option{
   background-color: #020d1f;
+  border: #d7411b 2px solid;
 }
 .row select option:hover{
   background-color: red;
 }
-.ticket-selector:focus{
-  border: #d7411b 2px solid;
-}
-.ticket-selector::after{
-  border: #d7411b 2px solid;
+.row select option:checked{
+  background-color: #d7411b;
 }
 .ticket-selector{ 
   color: white;
@@ -176,38 +199,58 @@ select {
   transition: transform .3s;
 }
 .ticket-selector:hover{
-  background-color: #d7411be6;
-  transform: scale(1.2);
+  transform: scale(1.2) translateY(-7px);
   cursor: pointer;
+}
+.description{
+  opacity: 1;
+  transition: opacity .3s;
+}
+.description:has(+ select:hover){
+  opacity: 0;
 }
 
 .ticket-number{
   width: 21%;
-  height: 50%;
-  padding: 10px;
+  height: 100%;
+  padding: 15px;
   text-align: center;
   color: white;
   border-radius: 4%;
   border: #d7411b 2px solid;
   font-size: 120%;
 }
+#ticket-number-hover{
+  height: 50%;
+  margin: 0;
+  padding-top: 10px;
+  transition: transform .3s;
+}
+#ticket-number-hover:hover, .ticket-number, .increase-btn, .decrease-btn{
+  transform: scale(1.1) translateY(-7px) translateX(7px);
+  opacity: 90%;
+  border-radius: 7px 7px 7px 7px;
 
+}
+.description:has(+ #ticket-number-hover:hover){
+  opacity: 0;
+}
 .buy{
   width: 25%;
   height: 40%;
   margin: auto;
   color: white;
-  border-radius: 4%;
+  border-radius: 3px 3px 3px 3px; 
   border: #d7411b 2px solid;
   background-color: #d7411b;
-  transition: transform .3s;
+  transition: transform .3s, border-radius .3s;
   box-sizing: border-box;
 }
 .buy:hover{
   cursor: pointer;
-  transform: scale(1.3);
+  transform: scale(1.3) translateX(7px);
   opacity: 90%;
-  border-radius: 10px 10px 10px 10px; 
+  border-radius: 7px 7px 7px 7px; 
 }
 .buy:disabled{
   transform: scale(1);
@@ -222,17 +265,80 @@ select {
   margin-left: 5%;
   text-align: center;
   font-size: 120%;
-  border-radius: 4%;
+  border-radius: 3px 3px 3px 3px;
   border: #d7411b 2px solid;
   background-color: #d7411b;
   color: white;
-  transition: transform .3s;
+  transition: transform .3s, border-radius .3s;
 }
 
 .increase-btn:hover, .decrease-btn:hover{
-  transform: scale(1.2);
+  transform: scale(1.2) translateY(-7px) translateX(7px);
   opacity: 90%;
-  border-radius: 20%;
+  border-radius: 7px 7px 7px 7px;
+}
+.customer-options{
+  width: auto;
+  right: 10px;
+  top: 10px;
+  position: absolute;
+  position: fixed;
+  text-align: start;
+  color: #d7411b;
+  z-index: 10;
+}
+.customer-name{
+  width: auto;
+  right: 10px;
+  top: 10px;
+  text-align: end;
+  color: #d7411b;
+  z-index: 10;
+}
+.customer-logout{
+  width: auto;
+  margin-top: 5%;
+  right: 10px;
+  top: 10px;
+  text-align: start;
+  color: #d7411b;
+  z-index: 10;
+  transition: transform .3s;
+}
+.logout{
+  transition: transform .3s;
+}
+.logout:hover{
+  transform: scale(1.3) translateX(10px);
+}
+.footer{
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  margin-top: 10%;
+  margin: auto;
+  text-align: center;
+  z-index: 9;
+}
+.button-holder{
+  width: 100%;
+  text-align: center;
+}
+.page-button{
+  width: 3.5%;
+  margin: 1%;
+  background-color: #d7411b;
+  color: white;
+  border: #d7411b 2px solid;
+  border-radius: 10px 10px 10px 10px;
+  transition: transform .3s;
+}
+.page-button:hover{
+  transform: scale(1.2);
+}
+.fa-angle-right, .fa-angle-left{
+  background-color: #d7411b00;
 }
 /* 
   /$$$$$$  /$$$$$$$  /$$$$$$$  /$$$$$$$$ /$$$$$$$   /$$$$$$ 
@@ -304,7 +410,7 @@ select {
   text-align: center;
 }
 .delete-button, .edit-button{
-  width: 50%;
+  width: 48.45px;
   margin-top: auto;
   margin-bottom: 5%;
   margin-left: 10%;
@@ -314,10 +420,32 @@ select {
   font-size: 120%;
   border-radius: 4%;
   border: #d7411b 2px solid;
-  transition: transform .3s;
+  transition: transform .3s, border-radius .3s;
 }
-.delete-button:hover, .edit-button:hover{
+.cancel-button{
+  position: absolute;
+  width: 48.45px;
+  margin-top: 3.347%;
+  margin-bottom: 5%;
+  margin-left: 4.8%;
+  background-color: #d7411b;
+  color: white;
+  text-align: center;
+  font-size: 120%;
+  border-radius: 4%;
+  border: #d7411b 2px solid;
+  transition: transform .3s, border-radius .3s;
+  display: none;
+}
+.cancel-button.visible{
+  display: block;
+}
+.delete-button.not-visible{
+  display: none;
+}
+.delete-button:hover, .edit-button:hover, .cancel-button:hover{
   transform: scale(1.1);
+  border-radius: 6px 6px 6px 6px;
   opacity: 90%;
 }
 .order-column input{
@@ -367,6 +495,12 @@ select {
   margin-bottom: 3%;
   display: flex;
 }
+.select-holder{
+  width: 75%;
+  height: auto;
+  display: block;
+}
+
 .search-filter{
   width: 80%;
   height: auto;
@@ -375,7 +509,7 @@ select {
   margin-bottom: 3%;
   display: block;
 }
-.search-filter input{
+#sbar{
   margin: auto;
   margin-right: 0;
   padding-left: 10px;
@@ -383,10 +517,15 @@ select {
   border-radius: 10px 10px 10px 10px;
   color: white;
 }
-.search-filter input::placeholder{
+#sbar::placeholder{
   margin-left: 2%;
   color: white;
   opacity: 0.5;
+}
+#sbar:focus{
+  outline: none;
+  border: #d7411b 2px solid;
+  border-radius: 10px 10px 10px 10px;
 }
 .filter-btn{
   width: 5%;
@@ -415,16 +554,17 @@ select {
   background-color: #d7411b;
   color: white;
   opacity: 0;
+  transform: translateY(-40px);
   transition: transform .3s, opacity .3s, heigth .3s;
 }
 .apply-filter-btn.visible{
+  transform: translateY(0px);
   opacity: 1;
   height: auto;
 }
 .apply-filter-btn:hover{
   transform: scale(1.1);
 }
-
 .apply-filter-btn i{
   background-color: #020d1f00;
 }
@@ -437,23 +577,97 @@ select {
   border: #d7411b 2px solid;
   border-radius: 10px 10px 10px 10px;
   opacity: 0;
-  transition: opacity .3s, heigth .3s;
+  transform: translateY(-40px);
+  transition: transform .3s, opacity .3s, heigth .3s;
+}
+.select-holder select:hover{
+  cursor: pointer;
 }
 .sf-row-select select.visible{
-
+  transform: translateY(0px);
   opacity: 1;
   height: auto;
 }
-.select-holder{
-  width: 75%;
-  height: auto;
-  display: block;
-}
+
 .button-holder{
   width: 25%;
   display: block;
 }
 
+
+/*
+  /$$$$$$  /$$       /$$$$$$ /$$$$$$$  /$$$$$$$$ /$$$$$$$ 
+ /$$__  $$| $$      |_  $$_/| $$__  $$| $$_____/| $$__  $$
+| $$  \__/| $$        | $$  | $$  \ $$| $$      | $$  \ $$
+|  $$$$$$ | $$        | $$  | $$  | $$| $$$$$   | $$$$$$$/
+ \____  $$| $$        | $$  | $$  | $$| $$__/   | $$__  $$
+ /$$  \ $$| $$        | $$  | $$  | $$| $$      | $$  \ $$
+|  $$$$$$/| $$$$$$$$ /$$$$$$| $$$$$$$/| $$$$$$$$| $$  | $$
+ \______/ |________/|______/|_______/ |________/|__/  |__/
+*/
+.slider-container{
+  width: 100%;
+  height: 15%;
+}
+#noUiSlider{
+  background: transparent;
+  opacity: 0;
+  transform: translateY(-40px);
+  transition: transform .3s, opacity .3s, heigth .3s;
+}
+#noUiSlider.visible{
+  transform: translateY(20px);
+  opacity: 1;
+}
+.noUi-target{
+  border: none;
+}
+.noUi-horizontal .noUi-base{
+  height: 100%;
+  border: none;
+}
+.noUi-base .noUi-connect{
+  
+  margin: 0px;
+  background: #d7411b;
+  color: #d7411b;
+  border: none;
+}
+div.noUi-connects{
+  
+  background-color: white;
+  border: none;
+  border-radius: 15px 15px 15px 15px;
+}
+.noUi-touch-area{
+  background-color: #d7411b;
+  border: #d7411b 2px solid;
+  border-radius: 10px 10px 10px 10px;
+}
+.noUi-touch-area:hover{
+  cursor: pointer;
+}
+.noUi-horizontal .noUi-handle{
+  width: 23px;
+  height: 23px;
+  transform: translateY(0px);
+  margin: auto;
+  background-color: #d7411b;
+  border: #d7411b 2px solid;
+  border-radius: 15px 15px 15px 15px;
+  box-shadow: none;
+}
+.noUi-horizontal .noUi-handle:before{
+  background-color: #d7411b00;
+}
+.noUi-horizontal .noUi-handle:after{
+  background-color: #d7411b00;
+}
+.noUi-tooltip{
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
 /*
  /$$        /$$$$$$   /$$$$$$  /$$$$$$$  /$$$$$$$$ /$$$$$$$ 
 | $$       /$$__  $$ /$$__  $$| $$__  $$| $$_____/| $$__  $$
