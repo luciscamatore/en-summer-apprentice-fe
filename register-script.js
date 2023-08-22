@@ -5,7 +5,7 @@ const emailInput = document.getElementById('email-input');
 const passInput = document.getElementById('pass-input');
 const passConfirmInput = document.getElementById('pass-confirm-input');
 
-registerButton.addEventListener('click', async ()=>{
+registerButton.addEventListener('click', async (req, res)=>{
     const response = await fetch('http://localhost:8080/api/getCustomer/' + emailInput.value, {
 		mode: 'cors',
       	method: 'GET',
@@ -24,7 +24,7 @@ registerButton.addEventListener('click', async ()=>{
         confirm('Passwords must match!');
         return;
     }
-    console.log(emailInput.value);
+
     fetch('http://localhost:8080/api/registerCustomer', 
     {
       mode:'cors',
@@ -38,6 +38,6 @@ registerButton.addEventListener('click', async ()=>{
         password: passInput.value,
         email: emailInput.value
       })
-    })
+    });
     location.href='http://localhost:5173/login.html';
 });

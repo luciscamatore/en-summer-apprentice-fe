@@ -1,6 +1,7 @@
 import * as eveniment from "./event-functions.js";
 import * as comanda from "./order-functions.js";
 
+
 $(window).load(function() {
   setTimeout(function() {
     $('body').addClass('loaded');
@@ -187,8 +188,7 @@ async function fetchEvents(vlocation, type){
       });
     }
 
-  const eventsList = await response.json();
-  console.log(eventsList);
+  const eventsList = await response.json(); 
   return eventsList;
 }
 
@@ -227,7 +227,7 @@ async function fetchOrders(){
   const customerID = sessionStorage.getItem('customerID');
   const response = await fetch('http://localhost:8080/api/orderByID/' + customerID, {mode:'cors'});
   const orderList = await response.json();
-  console.log(orderList);
+  
   return orderList;
 }
 async function renderOrdersPage(categories) {
