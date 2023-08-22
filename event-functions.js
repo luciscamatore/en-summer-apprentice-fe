@@ -10,7 +10,7 @@ export const addEvents = (events) => {
   }
 }
 export function createEventCard(eventElem){
-    const image = addImage(eventElem.eventName);
+    //const image = addImage(eventElem.eventName);
     const selectorID = eventElem.eventID+'s';
     const numberID = eventElem.eventID+'n';
     const ibtn = eventElem.eventID+'i';
@@ -29,7 +29,7 @@ export function createEventCard(eventElem){
       <header></header>
       <div class="event-card-content tb">
         <div class="event-card-image tb">
-          <img class="event-image" src="${image}">
+          <img class="event-image" src="${eventElem.image}">
         </div>
       <div class="event-card-data tb">
         <h2 class="event-title font-bold tb">${eventElem.eventName}</h2>
@@ -37,26 +37,22 @@ export function createEventCard(eventElem){
         <p class="description text-white tb">Starts @ ${eventStartDate.getDate() + ' / ' + eventStartDate.getMonth() + ' / ' + eventStartDate.getFullYear()}</p>
         <p class="description text-white tb">Ends @ ${eventEndDate.getDate() + ' / ' + eventEndDate.getMonth() + ' / ' + eventEndDate.getFullYear()}</p>
       </div>
-  
       <div class="action-container tb">
-      <div class="row tb">
-        <p class="description text-white tb">Ticket category:</p>
-        <select name="Select Category" class="ticket-selector" id="${selectorID}"> ${categoriesOptions.join('\n')} </select>
-      </div>
-      <div class="row tb">
-        <p class="description text-white">Number of tickets:</p>
-        <div class="row tb" id="ticket-number-hover">
-          <input class="ticket-number" placeholder="0" type="number" id="${numberID}">
-          <button class="increase-btn" id="${ibtn}"><i class="fa-solid fa-plus" style="background-color:#ffffff00"></i></button>
-          <button class="decrease-btn" id="${dbtn}"><i class="fa-solid fa-minus" style="background-color:#ffffff00"></i></button>
+        <div class="row tb">
+          <p class="description text-white tb">Ticket category:</p>
+          <select name="Select Category" class="ticket-selector" id="${selectorID}"> ${categoriesOptions.join('\n')} </select>
         </div>
-        
-        
-      </div>
-      
-      <div class="row tb">
-        <button class="text-white buy" id="${eventElem.eventID}" >Buy now!</button> 
-      </div>
+        <div class="row tb">
+          <p class="description text-white">Number of tickets:</p>
+          <div class="row tb" id="ticket-number-hover">
+            <input class="ticket-number" placeholder="0" type="number" id="${numberID}">
+            <button class="increase-btn" id="${ibtn}"><i class="fa-solid fa-plus" style="background-color:#ffffff00"></i></button>
+            <button class="decrease-btn" id="${dbtn}"><i class="fa-solid fa-minus" style="background-color:#ffffff00"></i></button>
+          </div>
+        </div>
+        <div class="row tb">
+          <button class="text-white buy" id="${eventElem.eventID}" >Buy now!</button> 
+        </div>
       </div>
       </div>
     `;
@@ -120,33 +116,6 @@ export function createEventCard(eventElem){
       });
   }
   
-  //coding monkey style
-  function addImage(eventName){
-    if(eventName == "Electric Castle")
-      var imageUrl = "https://happ.ro/wp-content/uploads/2023/07/electric-castle-2023-1.jpg";
-    if(eventName == "Untold")
-      var imageUrl = "https://weraveyou.com/wp-content/uploads/2023/03/UNTOLD.jpeg";
-    if(eventName == "Meci de fotbal")
-      var imageUrl = "https://www.basic-fit.com/dw/image/v2/BDFP_PRD/on/demandware.static/-/Library-Sites-basic-fit-shared-library/default/dw5927c613/Roots/Blog/Blog-Header/528x352/19-03-Blog-Fitness-Training-Football-Soccer.jpg?sw=600";
-    if(eventName == "Wine Festival")
-      var imageUrl = "https://www.northeastchartertour.com/wp-content/uploads/2017/11/Wine-Festival.jpg";
-    if(eventName == "SYF")
-      var imageUrl = "https://timponline.ro/wp-content/uploads/2018/08/festival-singeorz.jpg";
-    if(eventName == "Neversea")
-      var imageUrl = "https://www.ego.ro/wp-content/uploads/2022/07/6274e5f3db0be_neversea.jpg";
-    if(eventName == "Horizon Festival")
-      var imageUrl = "https://hellosunshinemag.com.au/wp-content/uploads/2022/08/da-website-hero-2000x1100-2.jpeg";
-    if(eventName == "Beach, please!")
-      var imageUrl = "https://www.fanatik.ro/wp-content/uploads/2023/04/beach.jpg";
-    if(eventName == "SAGA Festival")
-      var imageUrl = "https://weraveyou.com/wp-content/uploads/2021/09/3gKJ3JHg-e1631855109995.jpeg";
-    if(eventName == "Summerwell")
-      var imageUrl = "https://mediaflux.ro/wp-content/uploads/2023/02/summerwell-2023.jpg";
-    if(eventName == "Hustle")
-      var imageUrl = "https://i.ytimg.com/vi/WpMQVZUvD4M/hqdefault.jpg";
-    return imageUrl;
-  }
-
 export function filterButtonEvents(){
     const filterButton = document.getElementById('fbtn');
     const filterApplyButton = document.getElementById('fabtn');
@@ -272,8 +241,6 @@ export async function pagination(){
   const currentPage = responseData.currentPage;
 
   createPageButtons(totalPages, currentPage);
-  // console.log(eventContent);
-  console.log(responseData);
 
   addEvents(eventContent);
 

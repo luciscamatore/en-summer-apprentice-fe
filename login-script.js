@@ -15,7 +15,6 @@ loginButton.addEventListener('click', async ()=>{
       	});
 	
 	const customer = await response.json();
-	console.log(customer);
 
 	if(customer.customerID == null)
 		toastr.error('User not found!');
